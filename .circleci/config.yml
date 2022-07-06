@@ -61,7 +61,8 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build-{{ checksum "package.json"}}]
+          keys: 
+            - backend-build-{{ checksum "package.json" }}
       - run:
           name: Back-end build
           command: |
@@ -92,7 +93,8 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build-{{ checksum "package.json"}}]
+          keys: 
+            - backend-build-{{ checksum "package.json" }}
       - run: 
           name: Test backend
           command: |
@@ -123,7 +125,8 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build-{{ checksum "package.json"}}]
+          keys: 
+            - backend-build-{{ checksum "package.json" }}
       - run:
           name: Analyse backend
           command: |
