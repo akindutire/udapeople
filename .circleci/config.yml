@@ -71,7 +71,7 @@ jobs:
             npm run build
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-build-{{ checksum "package.json"}}
+          key: backend-build-{{ checksum "backend/package.json"}}
 
   test-frontend:
     docker:
@@ -94,7 +94,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: 
-            - backend-build-{{ checksum "package.json" }}
+            - backend-build-{{ checksum "backend/package.json" }}
       - run: 
           name: Test backend
           command: |
@@ -126,7 +126,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: 
-            - backend-build-{{ checksum "package.json" }}
+            - backend-build-{{ checksum "backend/package.json" }}
       - run:
           name: Analyse backend
           command: |
