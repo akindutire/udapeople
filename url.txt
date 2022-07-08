@@ -1,3 +1,9 @@
 [URL01] Git:  https://github.com/akindutire/udapeople.git
 [URL02] S3:
 [URL03] Cloudfront: 
+
+
+DB: udapeople.c4ruelmfmeww.us-east-1.rds.amazonaws.com
+DB_USER: udapeople
+DB_PWD: udapeople2022
+DB_PORT: 5432

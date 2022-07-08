@@ -43,3 +43,7 @@ Outputs:
     Value: !GetAttr EC2Instance.PublicDNS
     Export:
       Name: URL
+  ID:
+    Value: !Ref ID
+    Export:
+      Name: ID
