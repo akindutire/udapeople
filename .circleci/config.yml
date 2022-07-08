@@ -14,7 +14,7 @@ commands:
             aws cloudformation delete-stack \
             --stack-name uda-backend-<< parameters.workflow_id >> \
             --region us-east-1
-            aws s3 rm s3://udapeople-<< parameters.workflow_id >>  --recursive 
+            aws s3 rm s3://uda-<< parameters.workflow_id >>  --recursive 
             aws cloudformation delete-stack \
             --stack-name uda-frontend-<< parameters.workflow_id >> \
             --region us-east-1
@@ -30,7 +30,8 @@ commands:
           # Add when this will run
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = 1
+            SUCCESS=$(curl --insecure https://kvdb.io/41STMLkp4nLvf6S3jy2Q4E/udapeople)
+            echo $SUCCESS
             if(( $SUCCESS==1 )); 
             then
               cd ~/backend
@@ -136,8 +137,7 @@ jobs:
             cd backend
             npm install
             # npm install oauth-sign@^0.9.0
-            # npm audit fix --audit-level=critical --force
-            # npm audit --audit-level=critical
+            npm audit fix --audit-level=critical --force
             
   deploy-infrastructure:
     docker:
@@ -169,6 +169,7 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters 'Name=tag:Project, Values=UdaPeopleBackend' \
               --output text >> ansible/inventory
+            cat inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
@@ -188,9 +189,10 @@ jobs:
           at: ~/
       - run:
           name: Install dependencies
+          working_directory: ./.circleci/ansible
           command: |
-            # Your code here
-            exit 1
+            apk add --update ansible
+            ansible --version
       - run:
           name: Configure server
           command: |
