@@ -14,7 +14,7 @@ commands:
             aws cloudformation delete-stack \
             --stack-name uda-backend-<< parameters.workflow_id >> \
             --region us-east-1
-            aws s3 rm s3://udapeople-<< parameters.id >>  --recursive 
+            aws s3 rm s3://udapeople-<< parameters.workflow_id >>  --recursive 
             aws cloudformation delete-stack \
             --stack-name uda-frontend-<< parameters.workflow_id >> \
             --region us-east-1
