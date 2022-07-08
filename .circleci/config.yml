@@ -14,6 +14,7 @@ commands:
             aws cloudformation delete-stack \
             --stack-name uda-backend-<< parameters.workflow_id >> \
             --region us-east-1
+            aws s3 rm s3://udapeople-<< parameters.id >>  --recursive 
             aws cloudformation delete-stack \
             --stack-name uda-frontend-<< parameters.workflow_id >> \
             --region us-east-1
@@ -151,7 +152,6 @@ jobs:
               --tags project=UdaPeopleBackend \
               --stack-name uda-backend-${CIRCLE_WORKFLOW_ID:0:7}\
               --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7} 
-            exit 1
       - run:
           name: Ensure front-end infrastructure exist
           command: |
