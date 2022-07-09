@@ -170,7 +170,7 @@ jobs:
       - save_cache: 
           key: inventory-file-{{ .Revision }}
           paths: 
-            - project/.circleci/ansible/inventory.txt
+            - ./.circleci/ansible/inventory.txt
       - run:
           name: Ensure front-end infrastructure exist
           command: |
