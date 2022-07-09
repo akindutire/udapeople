@@ -167,9 +167,9 @@ jobs:
               --filters 'Name=tag:Project, Values=UdaPeopleBackend' \
               --output text >> ./.circleci/ansible/inventory.txt
             cat ./.circleci/ansible/inventory.txt
-      - persist_to_workspace:
-          root: ~/
-          paths:
+      - save_cache: 
+          key: inventory-file-{{ .Revision }}
+          paths: 
             - project/.circleci/ansible/inventory.txt
       - run:
           name: Ensure front-end infrastructure exist
@@ -196,8 +196,9 @@ jobs:
       - add_ssh_keys: 
           fingerprints: 
             - "93:c6:07:20:b2:a3:f5:d8:39:28:d3:4f:aa:f0:d9:91"
-      - attach_workspace:
-          at: ~/
+      - restore_cache:
+          keys: 
+            - inventory-file-{{ .Revision }}
       - run:
           name: Install dependencies
           command: |
@@ -255,8 +256,9 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/
+      - restore_cache:
+          keys: 
+            - inventory-file-{{ .Revision }}
       - run:
           name: Install dependencies
           command: |
@@ -297,8 +299,9 @@ jobs:
       - add_ssh_keys: 
           fingerprints: 
             - "93:c6:07:20:b2:a3:f5:d8:39:28:d3:4f:aa:f0:d9:91"
-      - attach_workspace:
-          at: ~/
+      - restore_cache:
+          keys: 
+            - inventory-file-{{ .Revision }}
       - run:
           name: Install dependencies
           command: |
@@ -330,8 +333,6 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/
       - run:
           name: Install dependencies
           command: |
