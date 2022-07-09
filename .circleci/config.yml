@@ -176,8 +176,8 @@ jobs:
               --tags project=UdaPeopleFrontend \
               --stack-name uda-frontend-${CIRCLE_WORKFLOW_ID:0:7} \
               --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}  
-      # - destroy-environment:
-      #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
   configure-infrastructure:
     docker:
@@ -198,7 +198,7 @@ jobs:
       - run:
           name: Configure server
           command: |
-            cd ./circleci/ansible
+            cd ./.circleci/ansible
             ls -a .
             ansible-playbook -i inventory.txt configure-server.yml     
       - destroy-environment:
