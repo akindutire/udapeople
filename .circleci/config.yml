@@ -156,10 +156,10 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             ls -a .
-            touch ./.circlci/ansible/inventory
-            echo "[web]" > ./.circlci/ansible/inventory
-            cat inventory.txt
-            echo ${BACKEND_IP} >> ansible/inventory
+            touch ./.circlci/ansible/inventory.txt
+            echo "[web]" > ./.circlci/ansible/inventory.txt
+            cat ./.circlci/inventory.txt
+            echo ${BACKEND_IP} >> ./.circlci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
