@@ -198,12 +198,7 @@ jobs:
             - "93:c6:07:20:b2:a3:f5:d8:39:28:d3:4f:aa:f0:d9:91"
       - restore_cache:
           keys: 
-            - inventory-file-{{ .Revision }}
-      - run:
-          name: Install dependencies
-          command: |
-            cd .circleci/ansible
-            
+            - inventory-file-{{ .Revision }}        
       - run:
           name: Configure server
           command: |
@@ -217,13 +212,13 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:13.8.0
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - run:
           name: Install aws
           command: |
-            apk add --update ansible tar curl nodejs npm gzip git openssh-client
+            apk add --update ansible tar curl nodejs npm gzip
             pip install awscli
             aws --version
       - restore_cache:
@@ -248,6 +243,8 @@ jobs:
                 curl  -k "https://kvdb.io/5FZ3YXuThLcyRTSihrqo3e/migration_${CIRCLE_WORKFLOW_ID:0:7}" -d '0'
               fi
       # Here's where you will add some code to rollback on failure    
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
