@@ -18,20 +18,6 @@
     state: latest
     update_cache: true
 
-- name: "create ~/web"
-  ansible.builtin.file:
-    path: ~/web
-    state: directory
-    mode: '0755'
-
-- name: "copy all files"
-  become: yes
-  copy:
-    src: "{{ role_path }}/files/"
-    dest: ~/web/
-    mode: "0755"
-    backup: yes
-
 - name: "install pm2"
   become: yes
   npm:
@@ -39,18 +25,3 @@
     global: true
     production: true
     state: latest
-
-
-- name: "install dep"
-  become: yes
-  shell:
-    "npm install"
-  args:
-    chdir: ~/web/
-
-- name: "run app"
-  become: yes
-  shell:
-    "pm2 start index.js -f"
-  args:
-    chdir: ~/web/
