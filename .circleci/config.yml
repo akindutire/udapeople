@@ -30,7 +30,7 @@ commands:
           # Add when this will run
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS=$(curl --insecure https://kvdb.io/41STMLkp4nLvf6S3jy2Q4E/udapeople)
+            SUCCESS=$(curl --insecure https://kvdb.io/5FZ3YXuThLcyRTSihrqo3e/udaBackendUrl)
             echo $SUCCESS
             if(( $SUCCESS==1 )); 
             then
@@ -163,13 +163,15 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            touch ansible/inventory
-            echo "[all]" > ansible/inventory
-            aws ec2 describe-instances \
+            touch ./.circlci/ansible/inventory
+            echo "[all]" > ./.circlci/ansible/inventory
+            BACKEND_IP = $(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters 'Name=tag:Project, Values=UdaPeopleBackend' \
-              --output text >> ansible/inventory
+              --output text)
+            curl -k https://kvdb.io/5FZ3YXuThLcyRTSihrqo3e/udaBackendUrl -d "http://${BACKEND_IP}:3030"
             cat inventory.txt
+            echo ${BACKEND_IP} >> ansible/inventory
       - persist_to_workspace:
           root: ~/
           paths:
@@ -189,16 +191,30 @@ jobs:
           at: ~/
       - run:
           name: Install dependencies
-          working_directory: ./.circleci/ansible
           command: |
+            cd .circleci/ansible
             apk add --update ansible
             ansible --version
       - run:
+          name: Copy project files to configure
+          command: |
+            echo ${PWD}
+            ANSIBLE_ROLE_DIR = ./circlci/ansible/roles
+            ls -a .
+            mkdir -p ${ANSIBLE_ROLE_DIR}/configure-server/files
+            cp -r --parents ./backend/src ${ANSIBLE_ROLE_DIR}/configure/files/
+            cp ./backend/*.json ${ANSIBLE_ROLE_DIR}/configure/files
+            cp ./backend/*.js ${ANSIBLE_ROLE_DIR}/configure/files
+            ls -a ${ANSIBLE_ROLE_DIR}/configure/files
+      - run:
           name: Configure server
           command: |
-            # Your code here
-            exit 1
+            cd ./circlci/ansible
+            ls -a .
+            ansible-playbook -i inventory.txt configure-server.yml 
       # Here's where you will add some code to rollback on failure      
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
   run-migrations:
     docker:
@@ -334,8 +350,8 @@ workflows:
       #    filters:
       #      branches:
       #        only: [test-feature-branch]
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
       # - deploy-frontend:
