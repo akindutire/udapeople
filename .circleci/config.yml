@@ -271,7 +271,7 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            set BACKEND_IP=$(aws ec2 describe-instances \
+            export BACKEND_IP=(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters 'Name=tag:Project, Values=UdaPeopleBackend' \
               --output text)
@@ -323,7 +323,7 @@ jobs:
             cp -r --parents ./backend/dist ${ANSIBLE_ROLE}/deploy/files/
             cd ./.circleci/ansible/
             cat inventory.txt
-            ansible-playbook -i inventory.txt deploy-server.yml
+            ansible-playbook -e ansible_python_interpreter=/usr/bin/python2 -i inventory.txt deploy-backend.yml
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
       - revert-migrations:
