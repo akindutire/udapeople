@@ -231,6 +231,7 @@ jobs:
           name: Run migrations
           command: |
             # Your code here
+            npm install
             npm run migrations:revert
             npm run migrations > migration_status.txt
       - run:
