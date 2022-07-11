@@ -213,6 +213,7 @@ jobs:
   run-migrations:
     docker:
       - image: python:3.7-alpine3.11
+    working_directory: ./backend/
     steps:
       - checkout
       - run:
@@ -228,7 +229,6 @@ jobs:
           name: Run migrations
           command: |
             # Your code here
-            cd backend
             npm install
             npm run migrations > migrations_dump.txt
       - run:
