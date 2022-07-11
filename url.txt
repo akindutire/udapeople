@@ -3,7 +3,8 @@
 [URL03] Cloudfront: 
 
 
-DB: udapeople.c4ruelmfmeww.us-east-1.rds.amazonaws.com
-DB_USER: udapeople
-DB_PWD: udapeople2022
+DB: uda.c4ruelmfmeww.us-east-1.rds.amazonaws.com
+DB_USER: uda0
+DB_PWD: grassroot
 DB_PORT: 5432
+DB_NAME: uda
