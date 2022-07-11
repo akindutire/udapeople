@@ -206,7 +206,7 @@ jobs:
             ansible --version
             cd ./.circleci/ansible
             ls -a .
-            ansible-playbook -i inventory.txt configure-server.yml     
+            ansible-playbook -e ansible_python_interpreter=/usr/bin/python2 -i inventory.txt configure-server.yml     
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
