@@ -28,6 +28,7 @@ commands:
       - run:
           name: Revert migrations
           # Add when this will run
+          working_directory: ./backend
           when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
@@ -35,7 +36,6 @@ commands:
             echo $SUCCESS
             if(( $SUCCESS==1 )); 
             then
-              cd ~/backend
               npm install
               npm run migrations:revert
             fi
@@ -232,7 +232,7 @@ jobs:
           command: |
             # Your code here
             npm install
-            npm run migrations:revert
+            #npm run migrations:revert
             npm run migrations > migration_status.txt
       - run:
           name: Send migration status to kvdb.io OR memstash.io
