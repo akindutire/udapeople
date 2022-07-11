@@ -322,7 +322,6 @@ jobs:
             cd backend/
             npm install
             npm run build
-            cd backend/
             set ANSIBLE_ROLE='./circleci/ansible/roles'
             mkdir -p ${ANSIBLE_ROLE}/deploy/files
             cp -r --parents dist/ ${ANSIBLE_ROLE}/deploy/files/
