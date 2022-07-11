@@ -318,11 +318,11 @@ jobs:
             cd backend/
             npm install
             npm run build
-            cd ../
+            cd backend/
             set ANSIBLE_ROLE='./circleci/ansible/roles'
             mkdir -p ${ANSIBLE_ROLE}/deploy/files
-            cp -r --parents backend/dist/ ${ANSIBLE_ROLE}/deploy/files/
-            cd ./.circleci/ansible/
+            cp -r --parents dist/ ${ANSIBLE_ROLE}/deploy/files/
+            cd ../.circleci/ansible/
             cat inventory.txt
             tree ${ANSIBLE_ROLE}/deploy
             ansible-playbook -e ansible_python_interpreter=/usr/bin/python2 -i inventory.txt deploy-backend.yml
