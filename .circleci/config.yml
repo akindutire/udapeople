@@ -254,7 +254,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: amazon/aws-cli
     steps:
       - checkout
       - run:
@@ -262,8 +262,12 @@ jobs:
           command: |
             mkdir -p tmp
             cd tmp
-            apk add --update ansible tar curl nodejs npm gzip
-            pip install awscli
+            yum update -y
+            yum install -y tar gzip
+            curl -sL https://rpm.nodesource.com/setup_13.x |  bash -
+            yum install -y nodejs
+            #apk add --update tar curl nodejs npm gzip
+            #pip install awscli
             aws --version
       - restore_cache:
           keys: 
