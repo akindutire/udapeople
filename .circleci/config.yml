@@ -322,7 +322,7 @@ jobs:
             cd ../
             set ANSIBLE_ROLE='./circlci/ansible/roles'
             mkdir -p ${ANSIBLE_ROLE}/deploy/files
-            cp -r --parents ./backend/dist ${ANSIBLE_ROLE}/configure/files/
+            cp -r --parents ./backend/dist ${ANSIBLE_ROLE}/deploy/files/
             cd ./.circleci/ansible/
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-server.yml
