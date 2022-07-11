@@ -271,9 +271,11 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_IP=$(aws ec2 describe-instances \
+            aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters 'Name=tag:Project, Values=UdaPeopleBackend')
+              --filters 'Name=tag:Project, Values=UdaPeopleBackend' --output text > i.txt
+            export BACKEND_IP=$(cat i.txt)
+            rm i.txt
             echo "http://${BACKEND_IP}:3030"
             echo "http://${BACKEND_IP}:3030" >> frontend/.env
             curl -k https://kvdb.io/5FZ3YXuThLcyRTSihrqo3e/udaBackendUrl_${CIRCLE_WORKFLOW_ID:0:7} -d "http://${BACKEND_IP}:3030"
@@ -284,9 +286,9 @@ jobs:
             cat .env
             npm install --no-save
             npm run build
-            ls -a .
+            #ls -a .
             #tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
-            aws s3 cp dist "s3://uda-${CIRCLE_WORKFLOW_ID:0:7}" --recursive   
+            #aws s3 cp dist "s3://uda-${CIRCLE_WORKFLOW_ID:0:7}" --recursive   
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}    
     
@@ -317,11 +319,12 @@ jobs:
             npm install
             npm run build
             cd ../
-            set ANSIBLE_ROLE='./circlci/ansible/roles'
+            set ANSIBLE_ROLE='./circleci/ansible/roles'
             mkdir -p ${ANSIBLE_ROLE}/deploy/files
             cp -r --parents ./backend/dist ${ANSIBLE_ROLE}/deploy/files/
             cd ./.circleci/ansible/
             cat inventory.txt
+            ls -a ${ANSIBLE_ROLE}/deploy/files
             ansible-playbook -e ansible_python_interpreter=/usr/bin/python2 -i inventory.txt deploy-backend.yml
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
