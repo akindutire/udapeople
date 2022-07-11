@@ -283,7 +283,7 @@ jobs:
           command: |
             cd frontend/
             cat .env
-            npm install
+            npm install --no-save
             npm run build
             ls -a .
             #tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
