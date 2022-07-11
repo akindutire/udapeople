@@ -233,7 +233,7 @@ jobs:
             # Your code here
             npm install
             #npm run migrations:revert
-            npm run migrations > migration_status.txt
+            npm run migrations --force > migration_status.txt
       - run:
           name: Send migration status to kvdb.io OR memstash.io
           working_directory: ./backend
