@@ -254,18 +254,20 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - run:
+          name: Install aws and dep
+          command: |
+            mkdir -p tmp
+            cd tmp
+            apk add --update ansible tar curl nodejs npm gzip
+            pip install awscli
+            aws --version
       - restore_cache:
           keys: 
             - inventory-file-{{ .Revision }}
-      - run:
-          name: Install dependencies
-          command: |
-            mkdir -p tmp
-            cd tmp/
-            curl -sL https://rpm.nodesource.com/setup_12.x | sudo bash -
       - run:
           name: Get backend url
           command: |
@@ -304,13 +306,13 @@ jobs:
           keys: 
             - inventory-file-{{ .Revision }}
       - run:
-          name: Install dependencies
+          name: Install aws and dep
           command: |
             mkdir -p tmp
-            cd tmp/
-            apk add --update curl gzip tar
-            curl -sL https://rpm.nodesource.com/setup_12.x | sudo bash -
-            apk add --update ansible
+            cd tmp
+            apk add --update ansible tar curl nodejs npm gzip
+            pip install awscli
+            aws --version
       - run:
           name: Deploy backend
           command: |
