@@ -12,6 +12,10 @@
     src: "dist/"
     dest: ~/
     recursive: true
+  register: command_output
+
+- debug: 
+  var: command_output.stdout_lines
 
 - name: "install dep"
   become: yes
