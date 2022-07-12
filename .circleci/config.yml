@@ -244,6 +244,7 @@ jobs:
             echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> ~/project/backend/.env
             cat ~/project/backend/.env
             npm run migrations --force > migration_status.txt
+            cat migration_status.txt
       - run:
           name: Send migration status to kvdb.io OR memstash.io
           working_directory: ./backend
