@@ -8,12 +8,14 @@
   become: yes
   apt:
     autoremove: yes
+
 - name: install deps
   become: yes
   apt:
-    name: ['nodejs', 'npm']
+    name: ['nodejs', 'npm', 'python3']
     state: latest
     update_cache: yes
+
 - name: install pm2
   become: yes
   npm:
