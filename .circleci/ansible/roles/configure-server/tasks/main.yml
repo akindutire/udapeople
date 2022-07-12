@@ -14,7 +14,7 @@
 - name: "install dependencies"
   become: yes
   yum:
-    name: "nodejs"
+    name: ["nodejs"]
     state: latest
     update_cache: true
 
