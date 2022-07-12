@@ -334,7 +334,7 @@ jobs:
             mkdir -p ${ANSIBLE_ROLE}/deploy/files
             cp -r --parents dist/ ${ANSIBLE_ROLE}/deploy/files/
             cd ../
-            #tree ${ANSIBLE_ROLE}/deploy
+            tree ${ANSIBLE_ROLE}/deploy
             ls -a .
             ansible-playbook -e ansible_python_interpreter=/usr/bin/python2 -i ./.circleci/ansible/inventory.txt ./.circleci/ansible/deploy-backend.yml
       - destroy-environment:
