@@ -11,6 +11,14 @@
   args:
     chdir: "~/"
 
+- name: "pull python 2"
+  become: yes
+  shell: |
+    "curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py"
+    "python get-pip.py"
+  args:
+    chdir: "~/"
+
 - name: "install dependencies"
   become: yes
   yum:
