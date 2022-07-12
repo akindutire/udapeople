@@ -12,7 +12,7 @@
 - name: install deps
   become: yes
   apt:
-    name: ['nodejs', 'npm', 'python3']
+    name: ['nodejs', 'npm']
     state: latest
     update_cache: yes
 
