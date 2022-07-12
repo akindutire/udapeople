@@ -274,7 +274,7 @@ jobs:
             cd tmp
             yum update -y
             yum install -y tar gzip
-            curl -sL https://rpm.nodesource.com/setup_13.x |  bash -
+            curl -sL https://rpm.nodesource.com/setup_14.x |  bash -
             yum install -y nodejs
             aws --version
       - restore_cache:
