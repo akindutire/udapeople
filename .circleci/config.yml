@@ -335,7 +335,7 @@ jobs:
             cd ../
             tree ${ANSIBLE_ROLE}/deploy
             ls -a .
-            ansible-playbook -e ansible_python_interpreter=/usr/bin/python2 -i ./.circleci/ansible/inventory.txt ./.circleci/ansible/deploy-backend.yml
+            ansible-playbook -e ansible_python_interpreter=/usr/bin/python3 -i ./.circleci/ansible/inventory.txt ./.circleci/ansible/deploy-backend.yml
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
       - revert-migrations:
