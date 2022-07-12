@@ -1,27 +1,23 @@
-- name: "Ansi Install packages"
+- name: 'update and upgrade packages.'
   become: yes
-  yum:
+  apt:
+    upgrade: yes
     update_cache: yes
-    state: latest
-
-- name: "pull nodejs12 artifacts"
+    cache_valid_time: 86400
+- name: remove unneeded deps
   become: yes
-  shell:
-    "curl -sL https://rpm.nodesource.com/setup_12.x | sudo bash -"
-  args:
-    chdir: "~/"
-
-- name: "install dependencies"
+  apt:
+    autoremove: yes
+- name: install deps
   become: yes
-  yum:
-    name: ["nodejs"]
+  apt:
+    name: ['nodejs', 'npm']
     state: latest
-    update_cache: true
-
-- name: "install pm2"
+    update_cache: yes
+- name: install pm2
   become: yes
   npm:
-    name: "pm2"
-    global: true
-    production: true
+    name: pm2
+    global: yes
     state: latest
+    production: yes
