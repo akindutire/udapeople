@@ -217,7 +217,7 @@ jobs:
       - run:
           name: Install aws
           command: |
-            mkdir -p tmp
+            sudo mkdir -p tmp
             cd tmp
             sudo apt install -y tar gzip curl
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -272,7 +272,7 @@ jobs:
       - run:
           name: Install aws and dep
           command: |
-            mkdir -p tmp
+            sudo mkdir -p tmp
             cd tmp
             sudo apt install -y tar gzip curl
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -321,7 +321,7 @@ jobs:
       - run:
           name: Install aws and dep
           command: |
-            mkdir -p tmp
+            sudo mkdir -p tmp
             cd tmp
             sudo apt install -y tar gzip curl ansible
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -335,7 +335,7 @@ jobs:
             npm install --silent
             npm run build
             set ANSIBLE_ROLE='./.circleci/ansible/roles'
-            mkdir -p ${ANSIBLE_ROLE}/deploy/files
+            sudo mkdir -p ${ANSIBLE_ROLE}/deploy/files
             cp -r --parents dist/ ${ANSIBLE_ROLE}/deploy/files/
             cd ../
             tree ${ANSIBLE_ROLE}/deploy
