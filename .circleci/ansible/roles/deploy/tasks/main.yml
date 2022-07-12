@@ -1,7 +1,7 @@
 - name: "copy all files"
   become: yes
   copy:
-    src: "files/dist/"
+    src: "dist/"
     dest: ~/
     mode: "0755"
     backup: yes
