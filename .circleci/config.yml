@@ -106,7 +106,6 @@ jobs:
             npm install
             npm run test
 
-            
   scan-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -212,7 +211,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - run:
@@ -220,8 +219,10 @@ jobs:
           command: |
             mkdir -p tmp
             cd tmp
-            apk add --update ansible tar curl nodejs npm gzip
-            pip install awscli
+            sudo apt install -y tar gzip curl
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip -qq awscliv2.zip
+            sudo ./aws/install
             aws --version
       - restore_cache:
           keys: 
@@ -265,7 +266,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - run:
@@ -273,8 +274,10 @@ jobs:
           command: |
             mkdir -p tmp
             cd tmp
-            apk add --update ansible tar curl nodejs npm gzip
-            pip install awscli
+            sudo apt install -y tar gzip curl
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip -qq awscliv2.zip
+            sudo ./aws/install
             aws --version
       - restore_cache:
           keys: 
@@ -306,7 +309,7 @@ jobs:
                     
   deploy-backend:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - add_ssh_keys: 
@@ -320,8 +323,10 @@ jobs:
           command: |
             mkdir -p tmp
             cd tmp
-            apk add --update ansible tar curl nodejs npm gzip tree
-            pip install awscli
+            sudo apt install -y tar gzip curl ansible
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip -qq awscliv2.zip
+            sudo ./aws/install
             aws --version
       - run:
           name: Deploy backend
