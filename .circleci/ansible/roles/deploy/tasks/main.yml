@@ -6,6 +6,12 @@
 #     mode: "0755"
 #     backup: yes
 
+- name: "install rsync on remote"
+  yum:
+    name: "rsync"
+    state: latest
+    update_cache: true
+
 - name: "copy files"
   become: yes
   synchronize:
