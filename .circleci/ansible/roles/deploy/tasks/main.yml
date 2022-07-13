@@ -14,13 +14,6 @@
 #   args:
 #     chdir: "~/"
 
-- name: install rsync on local
-  become: yes
-  connection: local
-  apt:
-    name: ['rsync']
-    state: present
-
 - name: "copy files"
   become: yes
   synchronize:
