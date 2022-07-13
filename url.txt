@@ -3,8 +3,8 @@
 [URL03] Cloudfront: 
 
 
-DB: uda.c4ruelmfmeww.us-east-1.rds.amazonaws.com
-DB_USER: uda0
+DB: database-1.c4ruelmfmeww.us-east-1.rds.amazonaws.com
+DB_USER: postgres
 DB_PWD: grassroot
 DB_PORT: 5432
 DB_NAME: uda
