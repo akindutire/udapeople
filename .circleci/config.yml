@@ -217,8 +217,6 @@ jobs:
       - run:
           name: Install aws
           command: |
-            sudo mkdir -p tmp
-            cd tmp
             sudo apt install -y tar gzip curl
             sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             sudo unzip -qq awscliv2.zip
@@ -272,10 +270,8 @@ jobs:
       - run:
           name: Install aws and dep
           command: |
-            sudo mkdir -p tmp
-            cd tmp
             sudo apt install -y tar gzip curl
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip -qq awscliv2.zip
             sudo ./aws/install
             aws --version
@@ -321,8 +317,6 @@ jobs:
       - run:
           name: Install aws and dep
           command: |
-            sudo mkdir -p tmp
-            cd tmp
             sudo apt install -y tar gzip curl ansible
             sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip -qq awscliv2.zip
