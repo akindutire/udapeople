@@ -14,12 +14,6 @@
 #   args:
 #     chdir: "~/"
 
-# - name: "install rsync on remote"
-#   yum:
-#     name: "rsync"
-#     state: latest
-#     update_cache: true
-
 - name: "copy files"
   become: yes
   synchronize:
