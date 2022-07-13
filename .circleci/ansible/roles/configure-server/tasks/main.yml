@@ -13,6 +13,8 @@
   become: yes
   shell: |
     "apt install -y rsync"
+    "whereis rsync"
+    "which rsync"
 
 - name: install deps
   become: yes
