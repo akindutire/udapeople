@@ -312,7 +312,7 @@ jobs:
       - run:
           name: Install aws and dep
           command: |
-            apk add --update ansible tar curl gzip nodejs npm
+            apk add --update ansible tar curl gzip nodejs npm tree
             pip install awscli
             aws --version
       - run:
@@ -429,12 +429,12 @@ workflows:
           requires: [deploy-infrastructure]
       - run-migrations:
           requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
+      - deploy-frontend:
+          requires: [run-migrations, deploy-backend]
       - smoke-test:
-          requires: [deploy-backend, deploy-frontend]
+          requires: [deploy-frontend]
       # - cloudfront-update:
       #     requires: [smoke-test]
       # - cleanup:
