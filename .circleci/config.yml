@@ -264,20 +264,21 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: amazon/aws-cli
     steps:
       - checkout
       - run:
           name: Install aws and dep
           command: |
-            sudo apt install -y tar gzip curl
-            sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip -qq awscliv2.zip
-            sudo ./aws/install
-            aws --version
+            yum update -y
+            yum install -y tar gzip
+            curl -sL https://rpm.nodesource.com/setup_13.x |  bash -
+            yum install -y nodejs
+
       - restore_cache:
           keys: 
             - inventory-file-{{ .Revision }}
+            - frontend-build
       - run:
           name: Get backend url
           command: |
@@ -288,21 +289,20 @@ jobs:
             rm i.txt
             echo "http://${BACKEND_IP}:3030"
             echo "API_URL=http://${BACKEND_IP}:3030" >> frontend/.env
-            curl -k https://kvdb.io/5FZ3YXuThLcyRTSihrqo3e/udaBackendUrl_${CIRCLE_WORKFLOW_ID:0:7} -d "http://${BACKEND_IP}:3030"
+            #curl -k https://kvdb.io/5FZ3YXuThLcyRTSihrqo3e/udaBackendUrl_${CIRCLE_WORKFLOW_ID:0:7} -d "http://${BACKEND_IP}:3030"
       - run:
           name: Deploying frontend objects to S3
           command: |
-            cd frontend/
+            cd frontend
             cat .env
-            npm install --silent
+            npm install
             npm run build
-            ls -a .
+            ls -al
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
-            aws s3 cp dist "s3://uda-${CIRCLE_WORKFLOW_ID:0:7}" --recursive   
+            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}    
-    
-                    
+        
   deploy-backend:
     docker:
       - image: circleci/node:13.8.0
