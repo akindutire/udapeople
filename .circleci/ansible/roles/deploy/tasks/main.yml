@@ -30,7 +30,6 @@
 - name: "run app"
   become: yes
   shell: |
-    "pm2 stop default"
     "pm2 start main.js -f"
   args:
     chdir: ~/dist/
