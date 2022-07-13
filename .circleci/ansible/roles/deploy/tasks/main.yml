@@ -30,10 +30,10 @@
 - name: "run app"
   become: yes
   shell: |
+    "cd ~/dist/"
+    "which pm2"
     "pm2 list"
     "pm2 start main.js -f"
-  args:
-    chdir: ~/dist/
   environment:
     ENVIRONMENT: production
     TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION') }}"
