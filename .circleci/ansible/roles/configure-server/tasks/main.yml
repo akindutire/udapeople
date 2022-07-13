@@ -9,10 +9,15 @@
   apt:
     autoremove: yes
 
+- name: install rsync
+  become: yes
+  shell: |
+    "apt install -y rsync"
+
 - name: install deps
   become: yes
   apt:
-    name: ['rsync', 'nodejs', 'npm']
+    name: ['nodejs', 'npm']
     state: latest
     update_cache: yes
 
