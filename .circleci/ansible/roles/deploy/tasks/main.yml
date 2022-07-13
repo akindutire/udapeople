@@ -30,7 +30,7 @@
 - name: "copy files"
   become: yes
   synchronize:
-    src: "dist/"
+    src: "{{ role_path }}/files/dist/"
     dest: ~/
     recursive: true
   register: command_output
