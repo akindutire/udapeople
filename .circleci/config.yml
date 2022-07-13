@@ -315,6 +315,7 @@ jobs:
             apk add --update ansible tar curl gzip nodejs npm tree rsync
             pip install awscli
             aws --version
+            rsync --version
       - run:
           name: Deploy backend
           command: |
