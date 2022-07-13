@@ -11,6 +11,19 @@
     name: rsync
     state: latest
 
+- name: install pm2
+  become: yes
+  npm:
+    name: pm2
+    global: yes
+    state: latest
+    production: yes
+
+- name: create dist dir
+  become: yes
+  shell: 
+    "sudo mkdir -p ~/dist"
+    
 - name: "copy files"
   become: yes
   synchronize:
