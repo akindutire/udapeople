@@ -30,7 +30,7 @@
 - name: "copy files"
   become: yes
   synchronize:
-    src: "../../backend/dist/"
+    src: "../../backend/dist"
     dest: ~/
     recursive: true
   register: command_output
@@ -38,6 +38,11 @@
 - debug: 
     var: command_output.stdout_lines
 
+- name : "show content"
+  become: yes
+  shell:
+    "ls -a ~/"
+    
 - name: "install dep"
   become: yes
   shell: |
