@@ -9,7 +9,14 @@
   apt:
     autoremove: yes
 
-- name: install rsync
+- name: install rsync on local
+  become: yes
+  connection: local
+  apt:
+    name: ['rsync']
+    state: present
+ 
+- name: install rsync on remote
   become: yes
   shell: |
     "apt install -y rsync"
