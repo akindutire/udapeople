@@ -14,6 +14,18 @@
 #   args:
 #     chdir: "~/"
 
+- name: install rsync on the ansible controller
+  connection: local
+  package:
+    name: rsync
+    state: present
+
+
+- name: install rsync on the ansible remote
+  package:
+    name: rsync
+    state: latest
+
 - name: "copy files"
   become: yes
   synchronize:
