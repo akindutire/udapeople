@@ -23,3 +23,8 @@
     global: yes
     state: latest
     production: yes
+
+- name: create dist dir
+  become: yes
+  shell: 
+    "sudo mkdir -p ~/dist"
