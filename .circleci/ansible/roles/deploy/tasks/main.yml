@@ -26,17 +26,16 @@
     state: latest
     production: yes
 
-# - name: create dist dir
-#   become: yes
-#   shell: 
-#     "sudo mkdir -p ~/dist"
+- name: create dir
+  become: yes
+  shell: 
+    "sudo mkdir -p /home/ubuntu/uda_app"
 
 - name: "copy files"
   become: yes
-  synchronize:
+  copy:
     src: "../../backend/dist/"
     dest: /home/ubuntu/uda_app
-    recursive: true
   register: command_output
 
 - debug: 
