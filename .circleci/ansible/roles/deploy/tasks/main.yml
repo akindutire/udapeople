@@ -35,7 +35,7 @@
   become: yes
   synchronize:
     src: "../../backend/dist/"
-    dest: ~/
+    dest: /home/ubuntu/uda_app
     recursive: true
   register: command_output
 
@@ -52,7 +52,7 @@
   become: true
   command: pm2 start -f ./main.js
   args:
-    chdir: ~/dist/
+    chdir: /home/ubuntu/uda_app/dist
   environment:
     ENVIRONMENT: production
     TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION') }}"
