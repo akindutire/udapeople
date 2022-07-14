@@ -29,7 +29,7 @@
 - name: create dir
   become: yes
   shell: 
-    "sudo mkdir -p /home/ubuntu/uda_app"
+    "mkdir -p /home/ubuntu/uda_app"
 
 - name: "copy files"
   become: yes
@@ -38,10 +38,10 @@
     dest: /home/ubuntu/uda_app
     mode: "0755"
     backup: yes
-  register: command_output
+  # register: command_output
 
-- debug: 
-    var: command_output.stdout_lines
+# - debug: 
+#     var: command_output.stdout_lines
 
 - name: "delete anything that might already be running"
   become: true
