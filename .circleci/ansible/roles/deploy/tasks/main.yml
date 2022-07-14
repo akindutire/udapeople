@@ -36,6 +36,8 @@
   copy:
     src: "../../backend/dist/"
     dest: /home/ubuntu/uda_app
+    mode: "0755"
+    backup: yes
   register: command_output
 
 - debug: 
