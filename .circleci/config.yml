@@ -295,17 +295,18 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - add_ssh_keys: 
+          fingerprints: 
+            - "93:c6:07:20:b2:a3:f5:d8:39:28:d3:4f:aa:f0:d9:91"
       - run:
           name: Install aws and dep
           command: |
-            yum update -y
-            yum install -y tar gzip
-            curl -sL https://rpm.nodesource.com/setup_13.x |  bash -
-            yum install -y nodejs
-
+            apk add --update ansible tar curl gzip nodejs npm tree openssh
+            pip install awscli
+            aws --version
       - restore_cache:
           keys: 
             - inventory-file-{{ .Revision }}
@@ -343,7 +344,7 @@ jobs:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}  
       - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
-          
+
   smoke-test:
     docker:
       - image: amazon/aws-cli
