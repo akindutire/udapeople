@@ -58,6 +58,25 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
+    
+  build-frontend-dup:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys: 
+          fingerprints: 
+            - "93:c6:07:20:b2:a3:f5:d8:39:28:d3:4f:aa:f0:d9:91"
+      - run:
+          name: Install aws and dep
+          command: |
+            apk add --update  tar curl gzip nodejs
+      - run:
+          name: Build front-end
+          command: |
+            cd frontend
+            npm install --no-save
+            npm run build
 
   build-backend:
     docker:
