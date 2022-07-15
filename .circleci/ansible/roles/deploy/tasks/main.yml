@@ -53,7 +53,7 @@
   become: true
   command: pm2 start -f main.js
   args:
-    chdir: /home/ubuntu/uda_app/dist
+    chdir: /home/ubuntu/uda_app
   environment:
     ENVIRONMENT: production
     TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION') }}"
