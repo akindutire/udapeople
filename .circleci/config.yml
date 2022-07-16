@@ -383,7 +383,7 @@ jobs:
 
   cloudfront-update:
     docker:
-      - image: aws/cli
+      - image: amazon/aws-cli
     steps:
       # Checkout code from git
       - run:
