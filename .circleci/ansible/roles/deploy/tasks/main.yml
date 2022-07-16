@@ -28,14 +28,23 @@
 
 - name: create dir
   become: yes
-  shell: 
+  shell: |
     "mkdir -p /home/ubuntu/uda_app"
+    "mkdir -p /home/ubuntu/uda_app/node_modules"
 
 - name: "copy files"
   become: yes
   copy:
     src: "../../backend/dist/"
     dest: /home/ubuntu/uda_app
+    mode: "0755"
+    backup: yes
+
+- name: "copy node_modules files"
+  become: yes
+  copy:
+    src: "../../backend/node_modules/"
+    dest: /home/ubuntu/uda_app/node_modules
     mode: "0755"
     backup: yes
   # register: command_output
