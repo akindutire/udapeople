@@ -39,21 +39,35 @@
     mode: "0755"
     backup: yes
 
-- name: "copy files"
+- name: "copy package.json"
   become: yes
   copy:
-    src: artifact.tar.gz
+    src: ../../backend/package.json
     dest: /home/ubuntu/uda_app
     mode: "0755"
     backup: yes
 
-- name: "extract files"
+- name: "install dep"
   become: yes
   shell: |
     cd /home/ubuntu/uda_app
-    tar -xvf artifact.tar.gz .
-    rm artifact.tar.gz
     npm install
+
+# - name: "copy files"
+#   become: yes
+#   copy:
+#     src: artifact.tar.gz
+#     dest: /home/ubuntu/uda_app
+#     mode: "0755"
+#     backup: yes
+
+# - name: "extract files"
+#   become: yes
+#   shell: |
+#     cd /home/ubuntu/uda_app
+#     tar -xvf artifact.tar.gz .
+#     rm artifact.tar.gz
+#     npm install
 
 # - name: "run install"
 #   become: yes
