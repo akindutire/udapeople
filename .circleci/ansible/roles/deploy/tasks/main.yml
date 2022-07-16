@@ -45,6 +45,19 @@
     mode: "0755"
     backup: yes
 
+- name: "copy package.json file"
+  become: yes
+  copy:
+    src: "../../backend/package.json"
+    dest: /home/ubuntu/uda_app
+    mode: "0755"
+    backup: yes
+
+- name: "run install"
+  become: yes
+  shell:
+    "npm install"
+
 # - name: "copy node_modules files"
 #   become: yes
 #   copy:
