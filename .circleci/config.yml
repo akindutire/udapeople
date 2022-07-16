@@ -61,21 +61,22 @@ jobs:
     
   build-frontend-dup:
     docker:
-      - image: circleci/node:13.8.0
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - add_ssh_keys: 
           fingerprints: 
             - "93:c6:07:20:b2:a3:f5:d8:39:28:d3:4f:aa:f0:d9:91"
-      # - run:
-      #     name: Install AWS CLI dependencies
-      #     command: |
-      #       sudo mkdir -p tmp
-      #       cd tmp/
-      #       sudo apt-get update && sudo apt-get install -yy less
-      #       sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-      #       unzip awscliv2.zip
-      #       sudo ./aws/install
+      - run:
+          name: Install aws and dep
+          command: |
+            apk add --update ansible tar curl gzip nodejs npm tree openssh
+            pip install awscli
+            aws --version
+      - restore_cache:
+          keys: 
+            - inventory-file-{{ .Revision }}
+            - frontend-build
       - run:
           name: Build front-end
           command: |
