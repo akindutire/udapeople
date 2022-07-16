@@ -31,12 +31,6 @@
   shell: 
     mkdir -p /home/ubuntu/uda_app
 
-- name: create mod dir
-  become: yes
-  shell: 
-    "mkdir -p /home/ubuntu/uda_app/node_modules"
-
-
 - name: "copy files"
   become: yes
   copy:
@@ -45,18 +39,26 @@
     mode: "0755"
     backup: yes
 
-- name: "copy package.json file"
+- name: "copy files"
   become: yes
   copy:
-    src: "../../backend/package.json"
+    src: artifact.tar.gz
     dest: /home/ubuntu/uda_app
     mode: "0755"
     backup: yes
 
-- name: "run install"
+- name: "extract files"
   become: yes
-  shell:
-    "npm install"
+  shell: |
+    cd /home/ubuntu/uda_app
+    tar -xvf artifact.tar.gz .
+    rm artifact.tar.gz
+    npm install
+
+# - name: "run install"
+#   become: yes
+#   shell:
+#     "npm install"
 
 # - name: "copy node_modules files"
 #   become: yes

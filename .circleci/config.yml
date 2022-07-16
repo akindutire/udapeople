@@ -278,17 +278,19 @@ jobs:
           name: Deploy backend
           command: |
             cd backend/
-            npm install --silent
+            npm install --legacy-peer-deps
             npm run build
+            rm -rf node_modules
             set ANSIBLE_ROLE='./.circleci/ansible/roles'
-            mkdir -p ${ANSIBLE_ROLE}/deploy/files
-            #cp -r --parents dist/ ${ANSIBLE_ROLE}/deploy/files/
-            cd ../
-            tree ${ANSIBLE_ROLE}/deploy
-            ls -a .
-            ansible-playbook -e ansible_python_interpreter=/usr/bin/python3 -i ./.circleci/ansible/inventory.txt ./.circleci/ansible/deploy-backend.yml --ssh-common-args='-o StrictHostKeyChecking=no'
-      - destroy-environment:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
+            mkdir -p -m 755 ${ANSIBLE_ROLE}/deploy/files
+            # Zip Backend Directory
+            tar -czvf artifact.tar.gz .
+            cp artifact.tar.gz ${ANSIBLE_ROLE}/deploy/files
+            cd ../.circleci/ansible/
+            tree deploy
+            ansible-playbook -e ansible_python_interpreter=/usr/bin/python3 -i inventory.txt deploy-backend.yml --ssh-common-args='-o StrictHostKeyChecking=no'
+      # - destroy-environment:
+      #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
       - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
 
