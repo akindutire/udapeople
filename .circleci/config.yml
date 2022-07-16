@@ -348,7 +348,6 @@ jobs:
             apk add --update --no-cache curl aws-cli tar gzip
             pip install awscli
             aws --version
-    
       - run:
           name: Backend smoke test.
           command: |
@@ -373,7 +372,7 @@ jobs:
             echo ${URL} 
             if curl -s ${URL} | grep "Welcome"
             then
-              return 1
+              return 0
             else
               return 1
             fi
@@ -390,12 +389,28 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # your code here
+            yum install tar gzip npm nodejs -y
       - run:
           name: Update cloudfront distribution
           command: |
-            # your code here
-      # Here's where you will add some code to rollback on failure  
+            export OldWorkflowID=$(aws cloudformation list-exports \
+            --query "Exports[?Name==\`${CIRCLE_WORKFLOW_ID:0:7}\`].Value" \
+            --no-paginate --output text)
+            echo $OldWorkflowID >> ~/OldWorkflowID.txt
+            cat ~/OldWorkflowID.txt
+            # Change the initial stack name, as applicable to you
+            aws cloudformation deploy \
+            --template-file .circleci/files/cloudfront.yml \
+            --stack-name uda-front \
+            --parameter-overrides WorkflowID=${CIRCLE_WORKFLOW_ID:0:7} \
+            --tags project=udapeople
+            echo OldWorkflowID=${OldWorkflowID}
+            echo Current Workflow ID: ${CIRCLE_WORKFLOW_ID:0:7}
+            curl -k https://kvdb.io/5FZ3YXuThLcyRTSihrqo3e/udacity_old_workflow_id -d "${OldWorkflowID}"
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7} 
 
 cleanup:
     docker:
@@ -403,17 +418,18 @@ cleanup:
     steps:
       - checkout
       - run:
-          name: Get old stack workflow id
+          name: Cleaning up old environment
           command: |
-            # your code here
-            export OldWorkflowID="the id here"
-            export STACKS=[] #put the list of stacks here
-      - run:
-          name: Remove old stacks and files
-          command: |
-            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
+            OldWorkflowID=$(curl --insecure https://kvdb.io/5FZ3YXuThLcyRTSihrqo3e/udacity_old_workflow_id)
+            CurrentWorkflowID=${CIRCLE_WORKFLOW_ID:0:7}
+            if [[ "$CurrentWorkflowID" != "$OldWorkflowID" ]]
             then
-              # your code here
+              echo "$OldWorkflowID!=$CurrentWorkflowID => will delete old version"
+              aws s3 rm "s3://uda-${OldWorkflowID}" --recursive
+              aws cloudformation delete-stack --stack-name "uda-frontend-${OldWorkflowID}"
+              aws cloudformation delete-stack --stack-name "uda-backend-${OldWorkflowID}"
+            else
+              echo "$OldWorkflowID==$CurrentWorkflowID => nothing needs to be done..."
             fi
             
 
@@ -432,9 +448,9 @@ workflows:
           requires: [build-frontend]
       - deploy-infrastructure:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-      #    filters:
-      #      branches:
-      #        only: [test-feature-branch]
+         filters:
+           branches:
+             only: [main]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
       - run-migrations:
@@ -445,7 +461,7 @@ workflows:
           requires: [run-migrations, deploy-backend]
       - smoke-test:
           requires: [deploy-frontend]
-      # - cloudfront-update:
-      #     requires: [smoke-test]
-      # - cleanup:
-      #     requires: [cloudfront-update]
+      - cloudfront-update:
+          requires: [smoke-test]
+      - cleanup:
+          requires: [cloudfront-update]
