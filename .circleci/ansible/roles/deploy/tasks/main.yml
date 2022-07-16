@@ -26,11 +26,16 @@
     state: latest
     production: yes
 
-- name: create dir
+- name: create f dir
   become: yes
-  shell: |
-    "mkdir -p /home/ubuntu/uda_app"
+  shell: 
+    mkdir -p /home/ubuntu/uda_app
+
+- name: create mod dir
+  become: yes
+  shell: 
     "mkdir -p /home/ubuntu/uda_app/node_modules"
+
 
 - name: "copy files"
   become: yes

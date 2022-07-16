@@ -14,7 +14,7 @@ commands:
             aws cloudformation delete-stack \
             --stack-name uda-backend-<< parameters.workflow_id >> \
             --region us-east-1
-            #aws s3 rm s3://uda-<< parameters.workflow_id >>  --recursive 
+            aws s3 rm s3://uda-<< parameters.workflow_id >>  --recursive 
             aws cloudformation delete-stack \
             --stack-name uda-frontend-<< parameters.workflow_id >> \
             --region us-east-1
@@ -282,7 +282,7 @@ jobs:
             npm run build
             set ANSIBLE_ROLE='./.circleci/ansible/roles'
             mkdir -p ${ANSIBLE_ROLE}/deploy/files
-            cp -r --parents dist/ ${ANSIBLE_ROLE}/deploy/files/
+            #cp -r --parents dist/ ${ANSIBLE_ROLE}/deploy/files/
             cd ../
             tree ${ANSIBLE_ROLE}/deploy
             ls -a .
