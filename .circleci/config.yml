@@ -68,9 +68,14 @@ jobs:
           fingerprints: 
             - "93:c6:07:20:b2:a3:f5:d8:39:28:d3:4f:aa:f0:d9:91"
       - run:
-          name: Install aws and dep
+          name: Install AWS CLI dependencies
           command: |
-            apk add --update  tar curl gzip nodejs npm
+            sudo mkdir -p tmp
+            cd tmp/
+            sudo apt-get update && sudo apt-get install -yy less
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
       - run:
           name: Build front-end
           command: |
