@@ -348,20 +348,16 @@ jobs:
             apk add --update --no-cache curl aws-cli tar gzip
             pip install awscli
             aws --version
+    
       - run:
-          name: Get backend url
+          name: Backend smoke test.
           command: |
-           aws ec2 describe-instances \
+            aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters 'Name=tag:Project, Values=UdaPeopleBackend' --output text > i.txt
             export BACKEND_IP=$(cat i.txt)
             rm i.txt
             export API_URL="http://${BACKEND_IP}:3030"
-            echo $API_URL
-            #export API_URL=$(curl --insecure https://kvdb.io/5FZ3YXuThLcyRTSihrqo3e/udaBackendUrl_${CIRCLE_WORKFLOW_ID:0:7})
-      - run:
-          name: Backend smoke test.
-          command: |
             echo $API_URL
             echo ----------------------
             if curl -s "${API_URL}/api/status" | grep "ok"
@@ -381,10 +377,10 @@ jobs:
             else
               return 1
             fi
-      # - destroy-environment:
-      #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
-      # - revert-migrations:
-      #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
 
   cloudfront-update:
     docker:
