@@ -45,13 +45,13 @@
     mode: "0755"
     backup: yes
 
-- name: "copy node_modules files"
-  become: yes
-  copy:
-    src: "../../backend/node_modules/"
-    dest: /home/ubuntu/uda_app/node_modules
-    mode: "0755"
-    backup: yes
+# - name: "copy node_modules files"
+#   become: yes
+#   copy:
+#     src: "../../backend/node_modules/"
+#     dest: /home/ubuntu/uda_app/node_modules
+#     mode: "0755"
+#     backup: yes
   # register: command_output
 
 # - debug: 
