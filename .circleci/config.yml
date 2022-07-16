@@ -67,15 +67,15 @@ jobs:
       - add_ssh_keys: 
           fingerprints: 
             - "93:c6:07:20:b2:a3:f5:d8:39:28:d3:4f:aa:f0:d9:91"
-      - run:
-          name: Install AWS CLI dependencies
-          command: |
-            sudo mkdir -p tmp
-            cd tmp/
-            sudo apt-get update && sudo apt-get install -yy less
-            sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
+      # - run:
+      #     name: Install AWS CLI dependencies
+      #     command: |
+      #       sudo mkdir -p tmp
+      #       cd tmp/
+      #       sudo apt-get update && sudo apt-get install -yy less
+      #       sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      #       unzip awscliv2.zip
+      #       sudo ./aws/install
       - run:
           name: Build front-end
           command: |
@@ -449,29 +449,29 @@ workflows:
       - build-frontend
       - build-backend
       - build-frontend-dup
-      - test-frontend:
-          requires: [build-frontend]
-      - test-backend:
-          requires: [build-backend]
-      - scan-backend:
-          requires: [build-backend]
-      - scan-frontend:
-          requires: [build-frontend]
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-      #    filters:
-      #      branches:
-      #        only: [test-feature-branch]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-backend:
-          requires: [run-migrations]
-      - deploy-frontend:
-          requires: [run-migrations, deploy-backend]
-      - smoke-test:
-          requires: [deploy-frontend]
+      # - test-frontend:
+      #     requires: [build-frontend]
+      # - test-backend:
+      #     requires: [build-backend]
+      # - scan-backend:
+      #     requires: [build-backend]
+      # - scan-frontend:
+      #     requires: [build-frontend]
+      # - deploy-infrastructure:
+      #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      # #    filters:
+      # #      branches:
+      # #        only: [test-feature-branch]
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - run-migrations:
+      #     requires: [configure-infrastructure]
+      # - deploy-backend:
+      #     requires: [run-migrations]
+      # - deploy-frontend:
+      #     requires: [run-migrations, deploy-backend]
+      # - smoke-test:
+      #     requires: [deploy-frontend]
       # - cloudfront-update:
       #     requires: [smoke-test]
       # - cleanup:
