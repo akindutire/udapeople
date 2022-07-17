@@ -4,7 +4,6 @@
     name: rsync
     state: present
 
-
 - name: install rsync on the ansible remote
   become: yes
   package:
@@ -52,27 +51,6 @@
   shell: |
     cd /home/ubuntu/uda_app
     npm install
-
-# - name: "copy files"
-#   become: yes
-#   copy:
-#     src: artifact.tar.gz
-#     dest: /home/ubuntu/uda_app
-#     mode: "0755"
-#     backup: yes
-
-# - name: "extract files"
-#   become: yes
-#   shell: |
-#     cd /home/ubuntu/uda_app
-#     tar -xvf artifact.tar.gz .
-#     rm artifact.tar.gz
-#     npm install
-
-# - name: "run install"
-#   become: yes
-#   shell:
-#     "npm install"
 
 # - name: "copy node_modules files"
 #   become: yes

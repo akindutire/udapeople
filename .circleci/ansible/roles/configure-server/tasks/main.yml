@@ -9,9 +9,9 @@
   apt:
     autoremove: yes
 
-- name: install deps
-  become: yes
-  apt:
-    name: ['nodejs', 'npm']
-    state: latest
-    update_cache: yes
+# - name: install deps
+#   become: yes
+#   apt:
+#     name: ['nodejs', 'npm']
+#     state: latest
+#     update_cache: yes
